@@ -98,7 +98,7 @@ def ask_question(question):
 
     docs = vectorstore.similarity_search(
         search_query,
-        k=3
+        k=4
     )
 
     answer = create_answer(question, docs)

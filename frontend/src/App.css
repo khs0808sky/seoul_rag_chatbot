@@ -1,0 +1,567 @@
+/* App 전체 레이아웃과 컴포넌트 스타일만 담당합니다. */
+
+.page {
+  min-height: 100vh;
+  padding: 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  /* 화면이 큰 경우, 전체 섹션(제목/질문/답변)이 위에 붙지 않게 “세로 가운데”에 가깝게 */
+  justify-content: center;
+  gap: 14px;
+}
+
+/* 화면이 낮은(작은) 경우에는 위로 붙는 편이 더 보기 좋습니다. */
+@media (max-height: 740px) {
+  .page {
+    justify-content: flex-start;
+  }
+}
+
+/* 배경을 “히어로 이미지 느낌”으로 만들기 위한 장식 레이어 */
+.page::before {
+  content: '';
+  position: fixed; /* 스크롤해도 배경이 “한 장”처럼 보이게 */
+  inset: -30px;
+  pointer-events: none;
+  background: url('/seoul_AI.png') center / cover no-repeat;
+  filter: blur(1px);
+  opacity: 1; /* 배경이 안 보인다면 조금 더 진하게 */
+  transform: scale(1.05);
+  z-index: 0;
+}
+
+.page::after {
+  content: '';
+  position: fixed; /* 오버레이도 같이 고정 */
+  inset: 0;
+  pointer-events: none;
+  /* 이미지 위에 “연한 초록 톤”을 살짝 얹어서 전체 톤을 맞춥니다. */
+  background:
+    radial-gradient(700px 420px at 18% 18%, rgba(16, 185, 129, 0.12), transparent 60%),
+    radial-gradient(860px 480px at 82% 22%, rgba(52, 211, 153, 0.10), transparent 62%),
+    linear-gradient(
+      180deg,
+      rgba(246, 251, 248, 0.35) 0%,
+      rgba(246, 251, 248, 0.70) 55%,
+      rgba(246, 251, 248, 0.92) 100%
+    ),
+    /* 아주 연한 패턴(도트) */
+    radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  background-size: auto, auto, auto, 18px 18px;
+  z-index: 0;
+}
+
+/* 배경 레이어 위로 실제 컨텐츠를 올립니다. */
+.hero,
+.main,
+.siteFooter {
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandBadge {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 10px 18px rgba(20, 83, 45, 0.12);
+  flex: 0 0 auto;
+}
+
+/* 히어로 섹션 */
+.hero {
+  max-width: 980px; /* 질문/답변 섹션(.container)과 너비를 통일 */
+  margin: 0 auto 14px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 18px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow:
+    0 22px 60px rgba(15, 23, 42, 0.10),
+    0 2px 10px rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(14px);
+}
+
+@media (min-width: 920px) {
+  .heroInner {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    padding: 22px 20px;
+  }
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+  color: var(--text-strong);
+  text-align: left;
+}
+
+@media (min-width: 920px) {
+  .heroTitle {
+    font-size: 40px;
+  }
+}
+
+.heroSubtitle {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.accentText {
+  color: rgba(6, 95, 70, 1);
+}
+
+.heroCtas {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.primaryCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 22px rgba(16, 185, 129, 0.18);
+}
+
+.primaryCta:hover {
+  filter: brightness(0.98);
+}
+
+.heroHint {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.heroBadges {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.pill {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(6, 95, 70, 1);
+  background: rgba(16, 185, 129, 0.10);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.heroVisual {
+  display: flex;
+  justify-content: stretch;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.7);
+}
+
+/* 오른쪽 “시계 카드” */
+.clockCard {
+  width: 100%;
+  min-height: 160px; /* 여백이 많아 보이면 높이를 줄입니다 */
+  border-radius: 18px;
+  padding: 12px; /* 내부 여백 줄이기 */
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  /* 실제 배경은 ::before(이미지)로 깔고, 여기서는 투명하게 둡니다. */
+  background: transparent;
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.10),
+    0 2px 10px rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* 시계 요소들을 가로 가운데로 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  position: relative;
+  overflow: hidden;
+}
+
+.clockCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/seoul_time_AI.png') center / cover no-repeat;
+  opacity: 1; /* 이미지가 확실히 보이도록 */
+  filter: none;
+  transform: scale(1.03);
+  z-index: 0;
+}
+
+.clockCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* 사진 위에 “아주 살짝”만 밝게 얹어서 글자 가독성 확보(너무 흰색이 되지 않게) */
+  background: linear-gradient(
+    180deg,
+    rgba(246, 251, 248, 0.18) 0%,
+    rgba(246, 251, 248, 0.34) 60%,
+    rgba(255, 255, 255, 0.40) 100%
+  );
+  z-index: 0;
+}
+
+.clockHeader,
+.clockValue,
+.clockSub {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 920px) {
+  .clockCard {
+    min-height: 180px; /* 큰 화면에서도 너무 커 보이지 않게 */
+  }
+}
+
+.clockHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: center; /* “서울 현재 시간” 라벨을 가운데로 */
+}
+
+.clockLabel {
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.clockValue {
+  margin-top: 0;
+  font-size: 40px; /* 시간 글자 키우기 */
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  color: rgba(15, 23, 42, 0.92);
+}
+
+.clockSub {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.70);
+}
+
+.main {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* 요청: 질문/답변을 “좌우 반반”이 아니라 “위아래로 한 줄씩” */
+
+.panel {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.07),
+    0 2px 10px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+.label {
+  display: block;
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-strong);
+  margin-bottom: 8px;
+}
+
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 12px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none; /* 마우스로 높이 조절(드래그) 막기 */
+  color: var(--text-strong);
+  outline: none;
+}
+
+.textarea:focus {
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 10px 18px rgba(16, 185, 129, 0.18);
+}
+
+.button:hover {
+  filter: brightness(0.98);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text);
+}
+
+kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--chip);
+  color: var(--text-strong);
+}
+
+.loading {
+  margin-top: 12px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.06);
+  color: var(--text-strong);
+  font-size: 13px;
+}
+
+.error {
+  margin-top: 12px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--text-strong);
+  font-size: 13px;
+}
+
+.sectionTitle {
+  margin: 0 0 10px;
+  text-align: left;
+  font-size: 16px;
+  color: var(--text-strong);
+}
+
+.resultTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
+}
+
+.tabButton {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.80);
+  color: var(--text-strong);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabButton:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.tabButton.active {
+  border-color: rgba(16, 185, 129, 0.45);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.sourcesBox {
+  margin-top: 10px;
+}
+
+.sourceCards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 720px) {
+  .sourceCards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sourceCard {
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 14px;
+  padding: 12px;
+  text-align: left;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+}
+
+.sourceCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sourceChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(6, 95, 70, 1);
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.sourceIndex {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.sourcePreview {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-strong);
+  display: -webkit-box;
+  line-clamp: 6; /* 호환성 경고 대응용(실제 적용은 -webkit-line-clamp가 담당) */
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.empty {
+  text-align: left;
+  color: var(--text);
+  font-size: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.searchQueryBox {
+  text-align: left;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.06);
+  margin-bottom: 12px;
+}
+
+.searchQueryTitle {
+  font-size: 12px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.searchQueryValue {
+  font-size: 14px;
+  color: var(--text-strong);
+  word-break: break-word;
+}
+
+.answer {
+  text-align: left;
+  white-space: pre-wrap; /* 줄바꿈을 자연스럽게 보여주기 */
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-strong);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* 서비스 특징 섹션 */
+/* 푸터를 없앴으므로 관련 스타일은 제거했습니다. */
+
+.inlineCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  background: var(--chip);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 8px;
+  color: var(--text-strong);
+}
