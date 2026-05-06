@@ -33,6 +33,28 @@ def load_vectorstore():
     return vectorstore
 
 
+def translate_question_to_english(question):
+    """
+    영어 PDF 검색 품질을 높이기 위해 사용자 질문을 영어 검색어로 변환하는 함수
+    """
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0
+    )
+
+    prompt = f"""
+다음 한국어 질문을 영어 PDF 문서 검색에 적합한 영어 검색어로 바꿔줘.
+설명은 하지 말고 영어 검색어만 출력해줘.
+
+질문:
+{question}
+"""
+
+    response = llm.invoke(prompt)
+
+    return response.content.strip()
+
+
 def create_answer(question, docs):
     """
     검색된 문서 조각을 참고해서 LLM 답변을 생성하는 함수
@@ -70,8 +92,12 @@ def ask_question(question):
     """
     vectorstore = load_vectorstore()
 
+    search_query = translate_question_to_english(question)
+
+    print(f"\n검색어 변환: {search_query}")
+
     docs = vectorstore.similarity_search(
-        question,
+        search_query,
         k=3
     )
 
