@@ -117,6 +117,7 @@ def ask_question(question):
 
     return {
         "question": question,
+        "search_query": search_query,
         "answer": answer,
         "sources": sources
     }
