@@ -1,6 +1,6 @@
 # 서울 생활 가이드 RAG 챗봇 (Seoul Life Guide RAG)
 
-서울 생활 가이드 PDF를 **벡터 DB(Chroma)**로 만들어두고, 사용자의 질문에 대해 관련 내용을 찾아 **한국어로 답변**해주는 RAG(Retrieval-Augmented Generation) 프로젝트입니다.
+서울 생활 가이드 PDF를 **벡터 DB**로 만들어두고, 사용자의 질문에 대해 관련 내용을 찾아 **한국어로 답변**해주는 RAG(Retrieval-Augmented Generation) 프로젝트입니다.
 
 - **백엔드**: FastAPI + LangChain + Chroma + OpenAI
 - **프론트엔드**: React + Vite (개발 중 `/ask`를 백엔드로 프록시)
